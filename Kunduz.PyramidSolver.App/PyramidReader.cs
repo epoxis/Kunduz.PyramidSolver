@@ -13,7 +13,7 @@ namespace Kunduz.PyramidSolver.App
         private readonly string _file;
         public PyramidReader(string path, IFileHelper fileHelper)
         {
-            _file = fileHelper.ReadAllText(path).TrimEnd();
+            _file = fileHelper.ReadAllText(path).TrimEnd().TrimStart();
         }
         /// <summary>
         /// Generates linked pyramid sections and returns the bottom one.
@@ -45,7 +45,7 @@ namespace Kunduz.PyramidSolver.App
         }
         private IEnumerable<string> SplitIntoLines(string file)
         {
-            foreach (var line in _file.Split(new[] { Environment.NewLine }, StringSplitOptions.None))
+            foreach (var line in _file.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
             {
                 yield return line;
             }

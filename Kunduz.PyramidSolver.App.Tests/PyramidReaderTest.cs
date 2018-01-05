@@ -9,7 +9,7 @@ namespace Kunduz.PyramidSolver.App.Tests
 {
     public class PyramidReaderTest
     {
-        private string _pyramidTxt = $"12{Environment.NewLine}14 55{Environment.NewLine}13 40 11";
+        private string _pyramidTxt = $"12@14 55@13 40 11".Replace("@", Environment.NewLine);
         private readonly Mock<IFileHelper> _fileHelper;
         private readonly IFixture _fixture = new Fixture();
         public PyramidReaderTest()

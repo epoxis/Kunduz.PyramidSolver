@@ -58,5 +58,10 @@
       <Name>Kunduz.PyramidSolver</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="100_satir.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
