@@ -2,6 +2,6 @@
 {
     public interface IPyramidReader
     {
-        IPyramidSection GeneratePyramidSections();
+        IPyramidSection GeneratePyramidSections(string path);
     }
 }

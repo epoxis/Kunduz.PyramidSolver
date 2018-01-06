@@ -11,7 +11,7 @@ namespace Kunduz.PyramidSolver
         private IPyramidSection _previous;
         public IReadOnlyList<int> Values { get; }
         public IPyramidSection Previous { get { return _previous; } }
-        public int Step { get { return Values.Count; } }
+        public int Step { get; }
         /// <summary>
         /// public constructor for the pyramid. This is the top section of the pyramid and can only contain a single value.
         /// </summary>
@@ -19,6 +19,7 @@ namespace Kunduz.PyramidSolver
         public PyramidSection(int value)
         {
             Values = new int[1] { value };
+            Step = 1;
         }
         /// <summary>
         /// private constructor for linking cotinuous sections of the pyramid
@@ -28,6 +29,7 @@ namespace Kunduz.PyramidSolver
         private PyramidSection(int[] array, PyramidSection prevSection)
         {
             Values = array;
+            Step = array.Length;
             _previous = prevSection;
         }
         /// <summary>
@@ -37,7 +39,7 @@ namespace Kunduz.PyramidSolver
         /// <returns>the next section of the pyramid</returns>
         public IPyramidSection CreateNext(int[] array)
         {
-            if (array.Length != Step + 1) throw new ArgumentException($"Expected array size: {Step}, received array size: {array.Length}");
+            if (array.Length != Step + 1) throw new ArgumentException($"Expected array size: {Step + 1}, received array size: {array.Length}");
             var newSection = new PyramidSection(array, this);
 
             return newSection;

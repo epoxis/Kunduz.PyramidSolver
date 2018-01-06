@@ -1,38 +1,55 @@
 ﻿using System;
+using Moq;
 using Xunit;
 using AutoFixture;
-using FluentAssertions;
+using AutoFixture.Idioms;
 using AutoFixture.AutoMoq;
-using Moq;
+using FluentAssertions;
+using AutoFixture.Xunit2;
+using System.IO;
 
 namespace Kunduz.PyramidSolver.App.Tests
 {
     public class PyramidReaderTest
     {
-        private string _pyramidTxt = $"12@14 55@13 40 11".Replace("@", Environment.NewLine);
-        private readonly Mock<IFileHelper> _fileHelper;
-        private readonly IFixture _fixture = new Fixture();
-        public PyramidReaderTest()
+        [Theory, AutoMoqData]
+        public void GeneratePyramid_InvalidInput_ThrowsException([Frozen]Mock<IFileHelper> fileHelper, string file, string path, PyramidReader sut)
         {
-            _fixture = new Fixture().Customize(new AutoMoqCustomization());
-            _fileHelper = _fixture.Freeze<Mock<IFileHelper>>();
-        }
-        [Fact]
-        public void GeneratePyramid_InvalidInput_ThrowsException()
-        {
-            _fileHelper.Setup(fr => fr.ReadAllText(It.IsAny<string>())).Returns(_fixture.Create<string>());
-            var sut = _fixture.Create<PyramidReader>();
+            fileHelper.Setup(fr => fr.FileExists(It.IsAny<string>())).Returns(true);
+            fileHelper.Setup(fr => fr.ReadAllText(It.IsAny<string>())).Returns(file);
 
-            Assert.Throws<ArgumentException>(() => sut.GeneratePyramidSections());
+            Assert.Throws<ArgumentException>(() => sut.GeneratePyramidSections(path));
         }
-        [Fact]
-        public void GeneratePyramid_ValidInput_GeneratesPyramid()
+        [Theory, AutoMoqData]
+        public void GeneratePyramid_FileDoesntExist_ThrowsFileNotFoundException([Frozen]Mock<IFileHelper> fileHelper, string path, PyramidReader sut)
         {
-            _fileHelper.Setup(fr => fr.ReadAllText(It.IsAny<string>())).Returns(_pyramidTxt);
-            var sut = _fixture.Create<PyramidReader>();
-            var section = sut.GeneratePyramidSections();
+            fileHelper.Setup(fr => fr.FileExists(path)).Returns(false);
+
+            Assert.Throws<FileNotFoundException>(() => sut.GeneratePyramidSections(path));
+        }
+        [Theory, AutoMoqData]
+        public void GeneratePyramid_ValidInput_GeneratesPyramid([Frozen]Mock<IFileHelper> fileHelper, string path, PyramidReader sut)
+        {
+            var pyramidText = $"12@14 55@13 40 11".Replace("@", Environment.NewLine);
+            fileHelper.Setup(fr => fr.FileExists(It.IsAny<string>())).Returns(true);
+            fileHelper.Setup(fr => fr.ReadAllText(It.IsAny<string>())).Returns(pyramidText);
+
+            var section = sut.GeneratePyramidSections(path);
+
             section.Should().NotBeNull();
             section.Previous.Should().NotBeNull();
+        }
+        [Theory, AutoMoqData]
+        public void Constructor_GuardClausesArePresent(GuardClauseAssertion assertion)
+        {
+            assertion.Verify(typeof(PyramidReader).GetConstructors());
+        }
+        public class AutoMoqDataAttribute : AutoDataAttribute
+        {
+            public AutoMoqDataAttribute() : base(() => new Fixture().Customize(new AutoMoqCustomization()))
+            {
+
+            }
         }
     }
 }
