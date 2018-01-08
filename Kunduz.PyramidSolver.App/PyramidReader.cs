@@ -41,7 +41,7 @@ namespace Kunduz.PyramidSolver.App
             }
             return currentSection;
         }
-        private IEnumerable<int> SplitIntoNumbers(string line)
+        private static IEnumerable<int> SplitIntoNumbers(string line)
         {
             foreach (var character in line.Split(' '))
             {
@@ -49,7 +49,7 @@ namespace Kunduz.PyramidSolver.App
                 yield return number;
             }
         }
-        private IEnumerable<string> SplitIntoLines(string file)
+        private static  IEnumerable<string> SplitIntoLines(string file)
         {
             foreach (var line in file.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
             {

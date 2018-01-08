@@ -8,7 +8,7 @@ namespace Kunduz.PyramidSolver
     /// </summary>
     public class PyramidSection : IPyramidSection
     {
-        private IPyramidSection _previous;
+        private readonly IPyramidSection _previous;
         public IReadOnlyList<int> Values { get; }
         public IPyramidSection Previous { get { return _previous; } }
         public int Step { get; }
@@ -18,7 +18,7 @@ namespace Kunduz.PyramidSolver
         /// <param name="value"></param>
         public PyramidSection(int value)
         {
-            Values = new int[1] { value };
+            Values = new int[] { value };
             Step = 1;
         }
         /// <summary>

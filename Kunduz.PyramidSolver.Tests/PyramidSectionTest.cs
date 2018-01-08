@@ -11,13 +11,8 @@ namespace Kunduz.PyramidSolverTests
     using PyramidSolver;
     public class PyramidSectionTest
     {
-        private readonly IFixture _fixture;
-        public PyramidSectionTest()
-        {
-            _fixture = new Fixture().Customize(new AutoMoqCustomization());
-        }
         [Theory, AutoData]
-        public void Constructor_WithValue_ShouldCreatesArrayWithOneValue(int value)
+        public static void Constructor_WithValue_ShouldCreatesArrayWithOneValue(int value)
         {
             var pyramidSection = new PyramidSection(value);
 
@@ -26,18 +21,18 @@ namespace Kunduz.PyramidSolverTests
             pyramidSection.Values.ElementAt(0).Should().Be(value);
         }
         [Theory, AutoData]
-        public void CreateNext_ArrayWithWrongSize_ShouldThrowException(PyramidSection sut, Generator<int> generator)
+        public static void CreateNext_ArrayWithWrongSize_ShouldThrowException(PyramidSection sut, Generator<int> generator, IFixture fixture)
         {
             var size = generator.First(number => number != sut.Step + 1);
-            var values = _fixture.CreateMany<int>(size).ToArray();
+            var values = fixture.CreateMany<int>(size).ToArray();
 
             Assert.Throws<ArgumentException>(() => sut.CreateNext(values));
         }
         [Theory, AutoData]
-        public void CreateNext_ArrayWithCorrectSize_ShouldCreateNextSection(PyramidSection sut)
+        public static void CreateNext_ArrayWithCorrectSize_ShouldCreateNextSection(PyramidSection sut, IFixture fixture)
         {
             var size = sut.Step + 1;
-            var values = _fixture.CreateMany<int>(size).ToArray();
+            var values = fixture.CreateMany<int>(size).ToArray();
 
             var nextSection = sut.CreateNext(values);
 
@@ -45,6 +40,6 @@ namespace Kunduz.PyramidSolverTests
             nextSection.Values.Count().Should().Be(size);
             nextSection.Previous.Should().Be(sut);
         }
-      
+
     }
 }

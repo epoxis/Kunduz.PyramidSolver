@@ -13,7 +13,7 @@ namespace Kunduz.PyramidSolver.App.Tests
     public class PyramidReaderTest
     {
         [Theory, AutoMoqData]
-        public void GeneratePyramid_InvalidInput_ThrowsException([Frozen]Mock<IFileHelper> fileHelper, string file, string path, PyramidReader sut)
+        public static void GeneratePyramid_InvalidInput_ThrowsException([Frozen]Mock<IFileHelper> fileHelper, string file, string path, PyramidReader sut)
         {
             fileHelper.Setup(fr => fr.FileExists(path)).Returns(true);
             fileHelper.Setup(fr => fr.ReadAllText(path)).Returns(file);
@@ -21,14 +21,14 @@ namespace Kunduz.PyramidSolver.App.Tests
             Assert.Throws<ArgumentException>(() => sut.GeneratePyramidSections(path));
         }
         [Theory, AutoMoqData]
-        public void GeneratePyramid_FileDoesntExist_ThrowsFileNotFoundException([Frozen]Mock<IFileHelper> fileHelper, string path, PyramidReader sut)
+        public static void GeneratePyramid_FileDoesntExist_ThrowsFileNotFoundException([Frozen]Mock<IFileHelper> fileHelper, string path, PyramidReader sut)
         {
             fileHelper.Setup(fr => fr.FileExists(path)).Returns(false);
 
             Assert.Throws<FileNotFoundException>(() => sut.GeneratePyramidSections(path));
         }
         [Theory, AutoMoqData]
-        public void GeneratePyramid_TopLayerLengthIsNotOne_ThrowsArgumentException([Frozen]Mock<IFileHelper> fileHelper, string path, PyramidReader sut)
+        public static void GeneratePyramid_TopLayerLengthIsNotOne_ThrowsArgumentException([Frozen]Mock<IFileHelper> fileHelper, string path, PyramidReader sut)
         {
             var pyramidText = $"12 22@14 55@13 40 11".Replace("@", Environment.NewLine);
             fileHelper.Setup(fr => fr.FileExists(path)).Returns(true);
@@ -37,7 +37,7 @@ namespace Kunduz.PyramidSolver.App.Tests
             Assert.Throws<ArgumentException>(() => sut.GeneratePyramidSections(path));
         }
         [Theory, AutoMoqData]
-        public void GeneratePyramid_ValidInput_GeneratesPyramid([Frozen]Mock<IFileHelper> fileHelper, string path, PyramidReader sut)
+        public static void GeneratePyramid_ValidInput_GeneratesPyramid([Frozen]Mock<IFileHelper> fileHelper, string path, PyramidReader sut)
         {
             var pyramidText = $"12@14 55@13 40 11".Replace("@", Environment.NewLine);
             fileHelper.Setup(fr => fr.FileExists(path)).Returns(true);
@@ -49,7 +49,7 @@ namespace Kunduz.PyramidSolver.App.Tests
             section.Previous.Should().NotBeNull();
         }
         [Theory, AutoMoqData]
-        public void Constructor_GuardClausesArePresent(GuardClauseAssertion assertion)
+        public static void Constructor_GuardClausesArePresent(GuardClauseAssertion assertion)
         {
             assertion.Verify(typeof(PyramidReader).GetConstructors());
         }

@@ -8,10 +8,9 @@ namespace Kunduz.PyramidSolver
     /// </summary>
     public class PyramidTotalizer : IPyramidTotalizer
     {
-        private IReadOnlyList<int> CrossSumArrays(IReadOnlyList<int> bottomArray, IReadOnlyList<int> topArray)
+        private static IReadOnlyList<int> CrossSumArrays(IReadOnlyList<int> bottomArray, IReadOnlyList<int> topArray)
         {
-            if (bottomArray.Count != topArray.Count + 1) throw new ArgumentException();
-            var bottomArrayLength = bottomArray.Count;
+            if (bottomArray.Count != topArray.Count + 1) throw new ArgumentException();            
             var topArrayLength = topArray.Count;
             var resultArray = new int[topArrayLength];
 
